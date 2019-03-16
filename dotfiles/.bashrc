@@ -97,7 +97,11 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-
+#stringtoarg() {
+#    inStr=$1;
+#    export arg_filename=$(cut -d":" -f1 <<< $1);
+#    export arg_linenum=$(cut -d":" -f2 <<< $1);
+#}
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

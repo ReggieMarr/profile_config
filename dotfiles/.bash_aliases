@@ -39,10 +39,12 @@ alias grep='grep -n -B 4 -A 4 --colour --exclude tags'
 
 # bash env agnostic exports
 #export FZF_DEFAULT_COMMAND
+export SC="$HOME/profile_config/customscripts/"
 export FZF_DEFAULT_OPTS="--reverse --inline-info --height=30"
 export FZF_COMPLETION_TRIGGER=']]'
 export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export PATH=$PATH:"$HOME/profile_config/customscripts/"
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 # Custom Aliases
 alias fsearch='rg . -n | fzf --preview="echo {} | cut -d ":" -f1 |xargs cat "'
@@ -61,4 +63,5 @@ alias nf='nvim $(fzf)'
 alias vf='vim $(fzf --preview="cat {}")'
 alias asource='source ~/.bashrc;source ~/.zshrc'
 alias update='sudo apt update && sudo apt upgrade -y'
+alias fv="vi $(rg . -n | fzf --preview="source $SC/string2arg.sh; string2arg {}"| cut -d":" -f1)"
 alias fbit='git lg | fzf'
