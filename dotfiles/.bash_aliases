@@ -35,20 +35,28 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-alias grep='grep -n -B 4 -A 4 --colour --exclude tags'
+alias grep='grep -n -B 4 -A 4 --colour --exclude tags -e'
+
+export WORKON_HOME=$HOME/code/.virtualenvs
+export PROJECT_HOME=$HOME/code
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+
+source /usr/local/bin/virtualenvwrapper.sh
 
 # bash env agnostic exports
 #export FZF_DEFAULT_COMMAND
-export SC="$HOME/profile_config/customscripts/"
-export FZF_DEFAULT_OPTS="--reverse --inline-info --height=30"
+export FZF_DEFAULT_COMMAND="fd --type file --color=always"
+export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
 export FZF_COMPLETION_TRIGGER=']]'
 export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-export PATH=$PATH:"$HOME/profile_config/customscripts/"
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 # Custom Aliases
-alias fsearch='rg . -n | fzf --preview="echo {} | cut -d ":" -f1 |xargs cat "'
-alias vfsearch='vi $(fsearch)'
+alias fsearch='rg . -n -g "!*.html" | fzf --preview="source $SC/string2arg.sh; string2arg {}"'
+alias vfsearch='export vfile=$(fsearch);vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)'
+alias cfsearch='export cfile=$(fsearch);code --go-to $(cut -d":" -f1 <<< $cfile):$(cut -d":" -f2 <<< $cfile)'
 alias fcheck='git_checkout $(git branch | fzf)'
 alias rcheck='git_checkout $(git branch -r | fzf)'
 alias ncheck='git checkout'
@@ -60,8 +68,15 @@ alias mi='maint_ip'
 alias pull='git pull -p'
 alias nn='nvim'
 alias nf='nvim $(fzf)'
-alias vf='vim $(fzf --preview="cat {}")'
+alias vf='vfile=$(fzf --preview="cat {}");vim $vfile && echo $vfile'
 alias asource='source ~/.bashrc;source ~/.zshrc'
-alias update='sudo apt update && sudo apt upgrade -y'
-alias fv="vi $(rg . -n | fzf --preview="source $SC/string2arg.sh; string2arg {}"| cut -d":" -f1)"
-alias fbit='git lg | fzf'
+alias update='sudo apt update && sudo apt upgrade -y && brew update'
+alias fbit='git lg $(fuzzls)'
+alias obd='/usr/bin/python3 ~/util/wescam-obd.py'
+alias cdc='cd ~/cfgdb'
+alias cdr='cd ~/Projects/workRequests/bugfixes/release/'
+alias fdiff='git diff $(fuzzls)'
+alias up='nmcli -p con up id Ethernet'
+alias down='nmcli -p con down id Ethernet'
+alias pep8='autopep8 --in-place --aggressive --aggressive'
+alias reset='git reset HEAD --hard'
