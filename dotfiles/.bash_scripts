@@ -1,0 +1,86 @@
+#
+# ~/.bash_scripts
+#
+
+export PATH=$PATH:$HOME/profile_config/customscripts/
+export bPath=/home/sw-eng/builds/
+
+git_checkout() {
+    git checkout "$1"
+}
+
+git_rebase() {
+    git rebase -i origin/"$1"
+}
+
+getTicket() {
+    echo $(git rev-parse --abbrev-ref HEAD | sed 's:.*\/..\/::' | sed 's:_.*::')
+}
+
+git_commit_message() {
+    git commit -m "$(getTicket) $1"
+}
+
+git_commit_fixup() {
+    git commit -a --fixup "$1"
+}
+
+git_clone() {
+    git clone ssh://git@cesium:7999/mx/release.git
+}
+
+
+hiho() {
+    python /home/rmarr/.customScripts/startWork.py "$1" "$2" #&& python /home/rmarr/.customScripts/keepTrack.py "$1" "$2"
+}
+
+openNote() {
+    noteName="Designer_Note_$(getTicket).md"
+    python ~/.customScripts/updateNote.py $(getTicket) && vim ~/notes/$noteName
+}
+
+
+#The soft reset just re-points HEAD to the last commit that you do not want to
+#squash. Neither the index nor the working tree are touched by the soft reset,
+#leaving the index in the desired state for your new commit (i.e. it already has
+#all the changes from the commits that you are about to “throw away”).
+
+gsquash() {
+    git reset --soft HEAD~"$1" && git commit --edit -m"$(git log\
+    --format=%B --reverse HEAD..HEAD@{1})"
+}
+
+nameFromStr () {
+    sed "s/:.*//" <<< $1
+}
+
+gdiff() {
+    if [ $# -eq 0 ]; then
+        git diff HEAD~1
+    else
+        git diff HEAD~"$1"
+    fi
+}
+
+
+ripg() {
+    rg $1 --column --line-number --no-heading --ignore-case --hidden --follow --color=always -C "3"
+}
+wbear() {
+    bear -l libear.so -o compile_commands.json $(make.py $1 --expand)
+}
+
+buildGrep() {
+    makeLine=$(make.py "$2" --expand)
+    echo $makeLine
+    makeToSearch=$(echo $makeLine | awk '{print $7}')
+    echo $makeToSeach
+    #for file in $(grep "$1" *.[ch] -l); do
+    #    grep ${file::-2} ${makeToSearch}
+    #done
+}
+
+cfree() {
+    code $1 toff
+}
+

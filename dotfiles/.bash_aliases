@@ -1,6 +1,5 @@
 #
 # ~/.bash_aliases
-# also used for zsh
 #
 eval $(thefuck --alias fuck)
 # Safeguarding aliases to confirm file changes
@@ -42,21 +41,26 @@ export PROJECT_HOME=$HOME/code
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-
+#git downloads path (gpd)
+export GDP=$HOME"/Downloads/gitDownloads"
+export PATH="$PATH:$GDP/skim/bin"
 source /usr/local/bin/virtualenvwrapper.sh
-
 # bash env agnostic exports
 #export FZF_DEFAULT_COMMAND
+export SC="$HOME/profile_config/customscripts/"
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
-export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
+export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi --preview-window=up:58"
 export FZF_COMPLETION_TRIGGER=']]'
 export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 # Custom Aliases
+alias orphan='& disown'
 alias fsearch='rg . -n -g "!*.html" | fzf --preview="source $SC/string2arg.sh; string2arg {}"'
-alias vfsearch='export vfile=$(fsearch);vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)'
-alias cfsearch='export cfile=$(fsearch);code --go-to $(cut -d":" -f1 <<< $cfile):$(cut -d":" -f2 <<< $cfile)'
+alias vfsearch='export vfile=$(fsearch);vim +$(cut -d":" -f2 <<< $vfile) \
+    $(cut -d":" -f1 <<< $vfile)'
+alias cfsearch='export cfile=$(fsearch);code --goto \
+    $(cut -d":" -f1 <<< $cfile):$(cut -d":" -f2 <<< $cfile) & disown'
 alias fcheck='git_checkout $(git branch | fzf)'
 alias rcheck='git_checkout $(git branch -r | fzf)'
 alias ncheck='git checkout'

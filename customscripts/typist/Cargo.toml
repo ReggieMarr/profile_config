@@ -2,6 +2,7 @@
 name = "typist"
 version = "0.1.0"
 authors = ["reggiemarr <reginald.t.marr@gmail.com>"]
-edition = "2018"
+# edition = "2019"
 
 [dependencies]
+structopt  = "0.2.10"
