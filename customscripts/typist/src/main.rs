@@ -1,4 +1,4 @@
-use std::env::args
+use std::env::args;
 
 struct Cli {
     pattern: String,
@@ -6,11 +6,11 @@ struct Cli {
 }
 
 fn main() {
-    let pattern = std::env::args().nth(1).expect("no pattern given");
-    let path = std::env::args().nth(2).expect("no pattern given");
-    let thisCli = Cli {
-        pattern: pattern,
-        path: path
-    };
+    // let pattern = std::env::args().nth(1).expect("no pattern given");
+    // let path = std::env::args().nth(2).expect("no pattern given");
+    // let thisCli = Cli {
+    //     pattern: pattern,
+    //     path: path
+    // };
     
 }
